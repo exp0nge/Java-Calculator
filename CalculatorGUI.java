@@ -17,12 +17,15 @@ public class CalculatorGUI extends JFrame{
     }
     private void initComponents(){
         Container contentPane = getContentPane();
-        contentPane.setLayout(new GridLayout(2, 1, 5, 5));
-        setSize(300, 250);
+        contentPane.setLayout(new GridLayout(2, 2, 5, 5));
+        setSize(200, 100);
 
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         final JTextField inputField = new JTextField();
+
+        final JTextField outputField = new JTextField();
 
         final JButton calculateButton = new JButton();
 
@@ -31,12 +34,14 @@ public class CalculatorGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 double result = calculatorInst.setInput(inputField.getText());
+                inputField.setText("");
                 String output = Double.toString(result);
-                JOptionPane.showMessageDialog(null, output);
+                outputField.setText(output);
             }
         });
-
+        outputField.setEditable(false);
         contentPane.add(inputField);
+        contentPane.add(outputField);
         contentPane.add(calculateButton);
         setVisible(true);
     }
