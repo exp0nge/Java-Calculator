@@ -71,21 +71,22 @@ public class Calculator {
         for (int i = this.operandIndex + 1; i < this.fixedArray.length; i++) {
             afterOp += this.fixedArray[i];
         }
+        if(beforeOp.equals("") && afterOp.equals("")){
+            result = 0.0;
+        }
+        else {
+            this.a = Double.parseDouble(beforeOp);
+            this.b = Double.parseDouble(afterOp);
 
-        this.a = Double.parseDouble(beforeOp);
-        this.b = Double.parseDouble(afterOp);
-
-        if(this.operator == "+"){
-            result = a + b;
-        }
-        else if(this.operator == "-"){
-            result = a - b;
-        }
-        else if(this.operator == "*"){
-            result = a * b;
-        }
-        else if(this.operator == "/"){
-            result = a / b;
+            if (this.operator == "+") {
+                result = a + b;
+            } else if (this.operator == "-") {
+                result = a - b;
+            } else if (this.operator == "*") {
+                result = a * b;
+            } else if (this.operator == "/") {
+                result = a / b;
+            }
         }
 
     }
