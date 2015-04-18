@@ -11,6 +11,7 @@ public class CalculatorGUI extends JFrame{
     final static int colm = 4;
 
     private String input;
+    private double memoryInput = 0;
 
     private Calculator calculatorInst;
 
@@ -68,8 +69,72 @@ public class CalculatorGUI extends JFrame{
         });
         return button;
     }
+    private JButton memoryButtons(final JTextField outputField, final JTextField inputfield, final JLabel currentMemory, final String memoryButtonText){
+        final JButton button = new JButton(memoryButtonText);
+        final Timer timer = new Timer(3000, null);
+        timer.setRepeats(false);
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(memoryButtonText.equals("MC")){
+                    try {
+                        memoryInput = 0;
+                        outputField.setText("");
+                        currentMemory.setText("Current memory: ");
+                    }
+                    catch (NumberFormatException g){
+                        button.setBackground(Color.RED);
+                        timer.start();
+                        button.setBackground(UIManager.getColor("control"));
+                    }
+                }
+                else if(memoryButtonText.equals("M+")){
+                    try {
+                        final double currentInputText = Double.parseDouble(outputField.getText());
+                        memoryInput += currentInputText;
+                        String newMemoryOutput = Double.toString(memoryInput);
+                        outputField.setText(newMemoryOutput);
+                        currentMemory.setText("Current memory: " + newMemoryOutput);
+                    }
+                    catch(NumberFormatException g){
+                        button.setBackground(Color.RED);
+                        timer.start();
+                        button.setBackground(UIManager.getColor("control"));
+                    }
+                }
+                else if(memoryButtonText.equals("M-")){
+                    try{
+                        final double currentInputText = Double.parseDouble(outputField.getText());
+                        memoryInput -= currentInputText;
+                        String newMemoryOutput = Double.toString(memoryInput);
+                        outputField.setText(newMemoryOutput);
+                        currentMemory.setText("Current memory: " + newMemoryOutput);
+                    }
+                    catch (NumberFormatException g){
+                        button.setBackground(Color.RED);
+                        timer.start();
+                        button.setBackground(UIManager.getColor("control"));
+                    }
+                }
+                else if(memoryButtonText.equals("MR")){
+                    try{
+                        String currentInputFieldText = inputfield.getText();
+                        currentInputFieldText += Double.toString(memoryInput);
+                        inputfield.setText(currentInputFieldText);
+                    }
+                    catch (NumberFormatException g){
+                        button.setBackground(Color.RED);
+                        timer.start();
+                        button.setBackground(UIManager.getColor("control"));
+                    }
+                }
+            }
+        });
+        return button;
+    }
     private void initComponents(){
-        JFrame frame = new JFrame("Calculator");
+        JFrame frame = new JFrame("MD's Calculator");
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -98,25 +163,33 @@ public class CalculatorGUI extends JFrame{
         c.fill = GridBagConstraints.BOTH;
         panel.add(inputField, c);
 
-        c.ipady = 0;
+        c.ipady = 0; //reset for buttons
+
+
+        //Adding memory label
+        JLabel currentMemory = new JLabel("Current memory: ");
+        c.gridx = 0;
+        c.gridy = 7;
+        panel.add(currentMemory, c);
+
         c.gridwidth = 1; //reset for buttons
         //Memory buttons
-        JButton MC = new JButton("MC");
+        JButton MC = memoryButtons(outputField, inputField, currentMemory, "MC");
         c.gridx = 0;
         c.gridy = 2;
         panel.add(MC, c);
 
-        JButton Mplus = new JButton("M+");
+        JButton mPlus = memoryButtons(outputField, inputField, currentMemory, "M+");
         c.gridx = 1;
         c.gridy = 2;
-        panel.add(Mplus, c);
+        panel.add(mPlus, c);
 
-        JButton Mminus = new JButton("M-");
+        JButton mMinus = memoryButtons(outputField, inputField, currentMemory, "M-");
         c.gridx = 2;
         c.gridy = 2;
-        panel.add(Mminus, c);
+        panel.add(mMinus, c);
 
-        JButton MR = new JButton("MR");
+        JButton MR = memoryButtons(outputField, inputField, currentMemory, "MR");
         c.gridx = 3;
         c.gridy = 2;
         panel.add(MR, c);
@@ -204,12 +277,7 @@ public class CalculatorGUI extends JFrame{
         c.gridy = 6;
         panel.add(dotButton, c);
 
-        //Adding memory label
-        //TODO: Implement this
-        JLabel currentMemory = new JLabel("Current memory: ");
-        c.gridx = 0;
-        c.gridy = 7;
-        panel.add(currentMemory, c);
+
 
         frame.setVisible(true);
     }

@@ -64,6 +64,20 @@ public class Calculator {
     private void doOperation(){
         String beforeOp = "", afterOp = "";
 
+        if (this.operator == "null") {
+            String arrayText = "";
+            for (int i = 0; i < this.fixedArray.length; i++) {
+                arrayText += this.fixedArray[i];
+            }
+            try{
+                result = Double.parseDouble(arrayText);
+            }
+            catch (NumberFormatException e){
+                result = 0;
+            }
+            return;
+        }
+
         for (int i = 0; i < this.operandIndex; i++) {
             beforeOp += this.fixedArray[i];
         }
@@ -71,7 +85,9 @@ public class Calculator {
         for (int i = this.operandIndex + 1; i < this.fixedArray.length; i++) {
             afterOp += this.fixedArray[i];
         }
-        if(beforeOp.equals("") && afterOp.equals("")){
+
+
+        if(beforeOp.equals("")){
             result = 0.0;
         }
         else {
@@ -88,6 +104,7 @@ public class Calculator {
                 result = a / b;
             }
         }
+        this.operator = "null";
 
     }
 
@@ -99,6 +116,7 @@ public class Calculator {
         parseInput(input);
         setOperator();
         doOperation();
+
         return getResult();
     }
 }
