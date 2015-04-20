@@ -11,7 +11,7 @@ public class CalculatorGUI extends JFrame{
     final static int colm = 4;
 
     private String input;
-    private double memoryInput = 0;
+    private double memoryInput;
 
     private Calculator calculatorInst;
 
@@ -36,11 +36,15 @@ public class CalculatorGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String userInput = inputField.getText();
-                setInput(userInput);
-                double result = calculatorInst.setInput(userInput);
-                inputField.setText("");
-                String output = Double.toString(result);
-                outputField.setText(output);
+                try {
+                    double result = calculatorInst.setInput(userInput);
+                    inputField.setText("");
+                    setInput(userInput);
+                    String output = Double.toString(result);
+                    outputField.setText(output);
+                } catch (NumberFormatException | ArrayIndexOutOfBoundsException nFE) {
+                    JOptionPane.showMessageDialog(inputField, "Bad input.");
+                }
             }
         });
 
@@ -71,8 +75,6 @@ public class CalculatorGUI extends JFrame{
     }
     private JButton memoryButtons(final JTextField outputField, final JTextField inputfield, final JLabel currentMemory, final String memoryButtonText){
         final JButton button = new JButton(memoryButtonText);
-        final Timer timer = new Timer(3000, null);
-        timer.setRepeats(false);
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -84,9 +86,7 @@ public class CalculatorGUI extends JFrame{
                         currentMemory.setText("Current memory: ");
                     }
                     catch (NumberFormatException g){
-                        button.setBackground(Color.RED);
-                        timer.start();
-                        button.setBackground(UIManager.getColor("control"));
+                        JOptionPane.showMessageDialog(inputfield, "MC ERROR");
                     }
                 }
                 else if(memoryButtonText.equals("M+")){
@@ -98,9 +98,7 @@ public class CalculatorGUI extends JFrame{
                         currentMemory.setText("Current memory: " + newMemoryOutput);
                     }
                     catch(NumberFormatException g){
-                        button.setBackground(Color.RED);
-                        timer.start();
-                        button.setBackground(UIManager.getColor("control"));
+                        JOptionPane.showMessageDialog(inputfield, "M+ ERROR");
                     }
                 }
                 else if(memoryButtonText.equals("M-")){
@@ -112,9 +110,7 @@ public class CalculatorGUI extends JFrame{
                         currentMemory.setText("Current memory: " + newMemoryOutput);
                     }
                     catch (NumberFormatException g){
-                        button.setBackground(Color.RED);
-                        timer.start();
-                        button.setBackground(UIManager.getColor("control"));
+                        JOptionPane.showMessageDialog(inputfield, "M- ERROR");
                     }
                 }
                 else if(memoryButtonText.equals("MR")){
@@ -124,9 +120,7 @@ public class CalculatorGUI extends JFrame{
                         inputfield.setText(currentInputFieldText);
                     }
                     catch (NumberFormatException g){
-                        button.setBackground(Color.RED);
-                        timer.start();
-                        button.setBackground(UIManager.getColor("control"));
+                        JOptionPane.showMessageDialog(inputfield, "MR ERROR");
                     }
                 }
             }
@@ -158,6 +152,7 @@ public class CalculatorGUI extends JFrame{
         JTextField inputField = new JTextField();
         c.gridx = 0;
         c.gridy = 1;
+        c.gridwidth = 4;
         c.weightx = 1;
         c.ipady = 20;
         c.fill = GridBagConstraints.BOTH;
@@ -165,11 +160,11 @@ public class CalculatorGUI extends JFrame{
 
         c.ipady = 0; //reset for buttons
 
-
         //Adding memory label
         JLabel currentMemory = new JLabel("Current memory: ");
         c.gridx = 0;
         c.gridy = 7;
+        c.gridwidth = 4;
         panel.add(currentMemory, c);
 
         c.gridwidth = 1; //reset for buttons
@@ -276,8 +271,6 @@ public class CalculatorGUI extends JFrame{
         c.gridx = 2;
         c.gridy = 6;
         panel.add(dotButton, c);
-
-
 
         frame.setVisible(true);
     }
