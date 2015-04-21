@@ -8,7 +8,9 @@ import java.awt.event.*;
 
 public class CalculatorGUI extends JFrame{
     final static int row = 7;
-    final static int colm = 4;
+    final static int colm = 5;
+
+    String currentOuput = "";
 
     private String input;
     private double memoryInput;
@@ -38,6 +40,7 @@ public class CalculatorGUI extends JFrame{
                 String userInput = inputField.getText();
                 try {
                     double result = calculatorInst.setInput(userInput);
+                    currentOuput = Double.toString(result);
                     inputField.setText("");
                     setInput(userInput);
                     String output = Double.toString(result);
@@ -127,6 +130,39 @@ public class CalculatorGUI extends JFrame{
         });
         return button;
     }
+    private JButton inputFieldEditorButtons(final JTextField inputField, String nameOfButton){
+        JButton button = new JButton(nameOfButton);
+
+        if(nameOfButton.equals("<--")){
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    final String input = inputField.getText();
+                    if (input.length() > 0)
+                        inputField.setText(input.substring(0, input.length()-1));
+                }
+            });
+        }
+        else if(nameOfButton.equals("CLR")){
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    inputField.setText("");
+                }
+            });
+        }
+        else if(nameOfButton.equals("ANS")){
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String currentInput = inputField.getText();
+                    currentInput += currentOuput;
+                    inputField.setText(currentInput);
+                }
+            });
+        }
+        return button;
+    }
     private void initComponents(){
         JFrame frame = new JFrame("MD's Calculator");
 
@@ -142,7 +178,7 @@ public class CalculatorGUI extends JFrame{
         JTextField outputField = new JTextField();
         c.gridx = 0;
         c.gridy = 0;
-        c.gridwidth = 4;
+        c.gridwidth = 5;
         c.ipady = 20;
         c.fill = GridBagConstraints.BOTH;
         outputField.setEditable(false);
@@ -152,7 +188,7 @@ public class CalculatorGUI extends JFrame{
         JTextField inputField = new JTextField();
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 4;
+        c.gridwidth = 5;
         c.weightx = 1;
         c.ipady = 20;
         c.fill = GridBagConstraints.BOTH;
@@ -271,6 +307,23 @@ public class CalculatorGUI extends JFrame{
         c.gridx = 2;
         c.gridy = 6;
         panel.add(dotButton, c);
+
+        //Input editor buttons
+        JButton clear = inputFieldEditorButtons(inputField, "CLR");
+        c.gridx = 4;
+        c.gridy = 2;
+        panel.add(clear, c);
+
+        JButton backSpace = inputFieldEditorButtons(inputField, "<--");
+        c.gridx = 4;
+        c.gridy = 3;
+        panel.add(backSpace, c);
+
+        JButton prevAns = inputFieldEditorButtons(inputField, "ANS");
+        c.gridx = 4;
+        c.gridy = 4;
+        panel.add(prevAns, c);
+
 
         frame.setVisible(true);
     }

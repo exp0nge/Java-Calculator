@@ -17,24 +17,11 @@ public class Calculator {
     }
 
     private void parseInput(String input){
-        boolean emptySpaces = true;
+
         String [] inputArray = input.split("");
-        //Removing empty spaces
-        int originalArrLength = inputArray.length;
-        for (int i = 0; i < originalArrLength; i++) {
-            if(inputArray[i].equals(" ")) {
-                System.arraycopy(inputArray, i + 1, inputArray, i, inputArray.length - 1 - i);
-                originalArrLength--;
-                if(emptySpaces == false)
-                    emptySpaces = true;
-            }
-        }
-        if(emptySpaces) {
-            //Making new array with no spaces
-            this.fixedArray = new String[originalArrLength];
-            System.arraycopy(inputArray, 0, this.fixedArray, 0, originalArrLength);
-        }
+        input.replace(" ", "");
         this.fixedArray = inputArray;
+
     }
 
     private boolean setOperator(){
