@@ -7,29 +7,66 @@ import java.awt.event.*;
  */
 
 public class CalculatorGUI extends JFrame{
+    /**
+     * Row value
+     */
     final static int row = 7;
+    /**
+     * Column value
+     */
     final static int colm = 5;
-
+    /**
+     * String to hold output
+     */
     String currentOuput = "";
-
+    /**
+     * String to hold current input
+     */
     private String input;
+    /**
+     * Double to hodl memory
+     */
     private double memoryInput;
 
     private Calculator calculatorInst;
 
+    /**
+     * Creates instance of calculator to get the result and inits component method
+     */
     public CalculatorGUI(){
         calculatorInst = new Calculator();
         initComponents();
     }
+    /**
+     * Setter for input
+     * @param in Input
+     */
     private void setInput(String in){
         this.input = in;
     }
+
+    /**
+     * Getter for input
+     * @return current input value
+     */
     private String getInput(){
         return this.input;
     }
+
+    /**
+     * Adds to the current value of input
+     * @param in New text to add to input
+     */
     private void concatInput(String in){
         this.input += in;
     }
+
+    /**
+     * Method for calculate button "="
+     * @param inputField JTextField reference to input field in GUI
+     * @param outputField JTextField reference to output field in GUI
+     * @return Instance of calculate button
+     */
     private JButton calculateButton (final JTextField inputField, final JTextField outputField){
         final JButton calculateButton = new JButton();
         calculateButton.setText("=");
@@ -63,6 +100,13 @@ public class CalculatorGUI extends JFrame{
 
         return calculateButton;
     }
+
+    /**
+     * Method to make numPad buttons
+     * @param inputField JTextField reference to input field in GUI
+     * @param numPadText Text to display on button
+     * @return Instance of button
+     */
     private JButton numPad(final JTextField inputField, final String numPadText){
         JButton button = new JButton(numPadText);
         button.addActionListener(new ActionListener() {
@@ -76,6 +120,15 @@ public class CalculatorGUI extends JFrame{
         });
         return button;
     }
+
+    /**
+     * Method to generate buttons for memory control.
+     * @param outputField JTextField reference to output field in GUI
+     * @param inputfield JTextField reference to input field in GUI
+     * @param currentMemory Reference to memory label
+     * @param memoryButtonText Determines what button to make
+     * @return Instance of button
+     */
     private JButton memoryButtons(final JTextField outputField, final JTextField inputfield, final JLabel currentMemory, final String memoryButtonText){
         final JButton button = new JButton(memoryButtonText);
 
@@ -130,6 +183,13 @@ public class CalculatorGUI extends JFrame{
         });
         return button;
     }
+
+    /**
+     * Method to make input field editor buttons (<--, CLR, etc)
+     * @param inputField JTextField reference to input field in GUI
+     * @param nameOfButton Name of button to put in instance
+     * @return returns instance of the button
+     */
     private JButton inputFieldEditorButtons(final JTextField inputField, String nameOfButton){
         JButton button = new JButton(nameOfButton);
 
@@ -163,6 +223,10 @@ public class CalculatorGUI extends JFrame{
         }
         return button;
     }
+
+    /**
+     * Inits all components of GUI (Buttons/fields/etc).
+     */
     private void initComponents(){
         JFrame frame = new JFrame("MD's Calculator");
 
