@@ -57,10 +57,9 @@ public class Calculator {
                 list.remove(i);
             }
         }
-        result = Double.parseDouble(tryOperations(list));
 
+        result = Double.parseDouble(tryOperations(list));
     }
-    //TODO: Figure out why this doesn't work for multiple operations.
 
     /**
      * Does operations in terms of precedence. Does not work for more than one operator.
@@ -72,31 +71,47 @@ public class Calculator {
         double temp;
         int opIndex;
         while(true) {
-            if (list.contains("*")) {
+            if (list.contains("*") && list.contains("/")) {
+                opIndex = list.indexOf("/");
+                int opIndex2 = list.indexOf("*");
+                if(opIndex < opIndex2) {
+                    temp = Double.parseDouble(list.get(opIndex - 1)) / Double.parseDouble(list.get(opIndex + 1));
+                    list.set(opIndex - 1, Double.toString(temp));
+                    list.remove(opIndex);
+                    list.remove(opIndex);
+                }
+                else{
+                    temp = Double.parseDouble(list.get(opIndex2 - 1)) * Double.parseDouble(list.get(opIndex2 + 1));
+                    list.set(opIndex2 - 1, Double.toString(temp));
+                    list.remove(opIndex2);
+                    list.remove(opIndex2);
+                }
+            }
+            else if (list.contains("*")) {
                 opIndex = list.indexOf("*");
                 temp = Double.parseDouble(list.get(opIndex-1)) * Double.parseDouble(list.get(opIndex+1));
-                list.add(opIndex - 1, Double.toString(temp));
+                list.set(opIndex - 1, Double.toString(temp));
                 list.remove(opIndex);
                 list.remove(opIndex);
             }
             else if(list.contains("/")) {
                 opIndex = list.indexOf("/");
                 temp = Double.parseDouble(list.get(opIndex-1)) / Double.parseDouble(list.get(opIndex+1));
-                list.add(opIndex - 1, Double.toString(temp));
+                list.set(opIndex - 1, Double.toString(temp));
                 list.remove(opIndex);
                 list.remove(opIndex);
             }
             else if(list.contains("+")) {
                 opIndex = list.indexOf("+");
                 temp = Double.parseDouble(list.get(opIndex-1)) + Double.parseDouble(list.get(opIndex+1));
-                list.add(opIndex - 1, Double.toString(temp));
+                list.set(opIndex - 1, Double.toString(temp));
                 list.remove(opIndex);
                 list.remove(opIndex);
             }
             else if(list.contains("-")) {
                 opIndex = list.indexOf("-");
                 temp = Double.parseDouble(list.get(opIndex-1)) - Double.parseDouble(list.get(opIndex+1));
-                list.add(opIndex - 1, Double.toString(temp));
+                list.set(opIndex - 1, Double.toString(temp));
                 list.remove(opIndex);
                 list.remove(opIndex );
             }
